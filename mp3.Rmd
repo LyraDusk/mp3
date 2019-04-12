@@ -1,0 +1,12 @@
+---
+title: "mp3"
+author: "Lauren Meyer"
+date: "4/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Hi all!
