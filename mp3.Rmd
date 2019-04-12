@@ -10,3 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Hi all!
+
+Plan: Use that^^ equation to get a difficulty number for each trail, then divide them into Easy, Medium, and Hard by those numbers and create a map with those three categories color-coded.
+We should be able to get trail length fairly easily
+The main hangup point is getting the elevation change over the length of the trail, which we'd have to do with an intersection of the trails and the contours_3m layers
