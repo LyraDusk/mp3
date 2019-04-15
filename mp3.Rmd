@@ -43,9 +43,18 @@ difficulty_ratings <- map_dfr(trails$name, get_height)
 difficulty_ratings <- difficulty_ratings%>%
   mutate(rating = ifelse(difficulty<=100, "Easy",
                          ifelse(difficulty<300, "Moderate",
-                         ifelse(difficulty>=300, "Hard", NA))))
+                         ifelse(difficulty>=300, "Hard", NA)))) %>%
+  na.omit()
 ```
 
+
+```{r}
+pal <- colorFactor("YlOrRd", domain = difficulty_ratings$rating)
+plot <- leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = difficulty_ratings, color = ~pal(rating), opacity = 1)
+plot
+```
 
 Hi all!
 
