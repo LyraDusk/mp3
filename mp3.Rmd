@@ -1,5 +1,5 @@
 ---
-title: "mp3"
+title: "Mini Project 3"
 author: "Lauren Meyer, Neamat Sabry, Carol Milton"
 date: "4/12/2019"
 output: 
@@ -11,10 +11,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(sf)
+library(leaflet)
 library(macleish)
 ```
 
-```{r}
+```{r message=FALSE}
 trails <- macleish_layers %>%
   pluck("trails") %>%
   mutate(len = st_length(geometry))
@@ -24,14 +25,14 @@ contours <- macleish_layers %>%
 joined <- st_join(trails, contours)
 ```
 
-```{r}
+```{r include=FALSE}
 
 get_height <- function(trail_name) {
   joined %>% filter(name == trail_name) %>%
     summarize(trailname = trail_name, max_h = max(ELEV_M), min_h = min(ELEV_M), diff_h = max_h - min_h,length = max(len), difficulty = diff_h * 2 * length) %>%
   mutate(difficulty = sqrt(as.numeric(length) * 2 * diff_h))
 }
-# Need to take the units off of Len
+
 get_height("Poplar Hill Road")
 
 names <- trails$name
@@ -56,8 +57,3 @@ plot <- leaflet() %>%
 plot
 ```
 
-Hi all!
-
-Plan: Use that^^ equation to get a difficulty number for each trail, then divide them into Easy, Medium, and Hard by those numbers and create a map with those three categories color-coded.
-We should be able to get trail length fairly easily
-The main hangup point is getting the elevation change over the length of the trail, which we'd have to do with an intersection of the trails and the contours_3m layers
