@@ -31,10 +31,10 @@ get_height <- function(trail_name) {
   summarize(max_h = max(ELEV_M), min_h = min(ELEV_M), diff_h = max_h - min_h,length = max(len)) #%>%
    # mutate(difficulty = sqrt(difficulty))
    
-  gsub('.{0,2}$', '', joined::diff_h)
+  gsub('.{0,4}$', '', joined$len)
    
-  joined %>%
-    summarize(difficulty = sqrt(as.numeric(diff_h) * 2 * length))
+  #joined %>%
+    #summarize(difficulty = sqrt(as.numeric(diff_h) * 2 * length))
 }
 # Need to take the units off of Len
 get_height("Poplar Hill Road")
