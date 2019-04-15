@@ -36,8 +36,17 @@ get_height("Poplar Hill Road")
 
 names <- trails$name
 
-a <- map_dfr(trails$name, get_height)
+difficulty_ratings <- map_dfr(trails$name, get_height)
 ```
+
+```{r}
+difficulty_ratings <- difficulty_ratings%>%
+  mutate(rating = ifelse(difficulty<=100, "Easy",
+                         ifelse(difficulty<300, "Moderate",
+                         ifelse(difficulty>=300, "Hard", NA))))
+```
+
+
 Hi all!
 
 Plan: Use that^^ equation to get a difficulty number for each trail, then divide them into Easy, Medium, and Hard by those numbers and create a map with those three categories color-coded.
