@@ -14,7 +14,6 @@ We want to know which of the trails are easier or harder for participants to tre
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(sf)
-library(leaflet)
 library(macleish)
 library(leaflet)
 ```
