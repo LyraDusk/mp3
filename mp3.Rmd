@@ -1,24 +1,29 @@
 ---
-title: "mp3"
+title: "Rate that Trail!"
 author: "Lauren Meyer, Neamat Sabry, Carol Milton"
 date: "4/12/2019"
 output: 
   html_document:
     code_folding: hide
 ---
+##Our Question:
+###How difficult are the trails in the Macleish Field Station in relation to each other?
+We want to know which of the trails are easier or harder for participants to treck. With this information, we hope that the people interested in hiking these trails will be more informed on their options, thus, they will be able to choose trails that are more comfortable for them.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(sf)
+library(leaflet)
 library(macleish)
 library(leaflet)
 ```
 
-```{r}
+```{r message=FALSE}
 trails <- macleish_layers %>%
   pluck("trails") %>%
   mutate(len = st_length(geometry))
+
 contours <- macleish_layers %>%
   pluck("contours_3m")
 
@@ -26,28 +31,20 @@ joined <- st_join(trails, contours)
 ```
 
 ```{r}
-
 get_height <- function(trail_name) {
   joined %>% filter(name == trail_name) %>%
-    summarize(trailname = trail_name, max_h = max(ELEV_M), min_h = min(ELEV_M), diff_h = max_h - min_h,length = max(len), difficulty = diff_h * 2 * length) %>%
+  summarize(trailname = trail_name, max_h = max(ELEV_M), min_h = min(ELEV_M), diff_h = max_h - min_h,length = max(len), difficulty = diff_h * 2 * length) %>%
   mutate(difficulty = sqrt(as.numeric(length) * 2 * diff_h))
 }
-# Need to take the units off of Len
-get_height("Poplar Hill Road")
-
-names <- trails$name
-
-difficulty_ratings <- map_dfr(trails$name, get_height)
 ```
 
-```{r}
-difficulty_ratings <- difficulty_ratings%>%
+```{r include=FALSE}
+difficulty_ratings <- map_dfr(trails$name, get_height) %>%
   mutate(rating = ifelse(difficulty<=100, "Easy",
                          ifelse(difficulty<300, "Moderate",
                          ifelse(difficulty>=300, "Hard", NA)))) %>%
   na.omit()
 ```
-
 
 ```{r}
 pal <- colorFactor("YlOrRd", domain = difficulty_ratings$rating)
@@ -57,8 +54,9 @@ plot <- leaflet() %>%
 plot
 ```
 
-Hi all!
+##Our Answer:
+In the visualization above, we have color coded the trails at Macleish according to their difficulty ratings. The yellow lines depict the easier trails. The red lines show the relatively moderate trails while the the orange lines depict the most difficult trails.
+In order to rate these trails, we looked at multiple factors that could impact the trails' difficulty such as the lengths of the trails and their changes in elevations. We used the [Difficulty Rating Formula](https://www.nps.gov/shen/planyourvisit/how-to-determine-hiking-difficulty.htm) to calculate values that represented the trails' difficulty. Then, using these values, we organized the trails according to the 'Easy', 'Moderate', and 'Hard' categories.
+In order to organize our work and sustain group collaboration, we used a GitHub repository.^[https://github.com/LyraDusk/mp3.git]
 
-Plan: Use that^^ equation to get a difficulty number for each trail, then divide them into Easy, Medium, and Hard by those numbers and create a map with those three categories color-coded.
-We should be able to get trail length fairly easily
-The main hangup point is getting the elevation change over the length of the trail, which we'd have to do with an intersection of the trails and the contours_3m layers
+From our findings, we discovered that there are three 'Easy' trails, Vernal Pool Loop, Entry Trail, and Driveway. Driveway is the easiest with a difficulty rating of zero. People interested in having a tast of the Macleish Field Station while staying comfortable may find these trails a pleasant option. The only 'Hard' trail is Snowmobile Trail with a difficulty rating of about 421. This will be a good option for those who like the challenge. The other four trails are rated as 'Moderate'.
