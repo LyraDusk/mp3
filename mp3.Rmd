@@ -55,6 +55,7 @@ plot
 
 ##Our Answer:
 In the visualization above, we have color coded the trails at Macleish according to their difficulty ratings. The yellow lines depict the easier trails. The red lines show the relatively moderate trails while the the orange lines depict the most difficult trails.
+
 In order to rate these trails, we looked at multiple factors that could impact the trails' difficulty such as the lengths of the trails and their changes in elevations. We used the [Difficulty Rating Formula](https://www.nps.gov/shen/planyourvisit/how-to-determine-hiking-difficulty.htm) to calculate values that represented the trails' difficulty. Then, using these values, we organized the trails according to the 'Easy', 'Moderate', and 'Hard' categories.
 In order to organize our work and sustain group collaboration, we used a GitHub repository.^[https://github.com/LyraDusk/mp3.git]
 
